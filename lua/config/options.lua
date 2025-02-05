@@ -72,3 +72,7 @@ vim.opt.conceallevel = 2
 
 -- vim: ts=2 sts=2 sw=2 et
 vim.opt.guicursor = "n-v-i-c:block-Cursor"
+
+-- some primeagen stuff
+vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
+vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tms<CR>")

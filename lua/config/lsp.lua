@@ -1,6 +1,6 @@
 require("mason").setup()
 require("mason-lspconfig").setup({
-	ensure_installed = { "lua_ls", "rust_analyzer", "ts_ls", "java_language_server"},
+	ensure_installed = { "lua_ls", "rust_analyzer", "ts_ls", "java_language_server" },
 })
 
 function lsp_keymap(bufnr)
@@ -19,19 +19,13 @@ function lsp_keymap(bufnr)
 end
 
 require("mason-lspconfig").setup_handlers({
-	-- The first entry (without a key) will be the default handler
-	-- and will be called for each installed server that doesn't have
-	-- a dedicated handler.
-	require("mason-lspconfig").setup_handlers({
-		-- Default handler for all installed servers
-		function(server_name)
-			require("lspconfig")[server_name].setup({
-				on_attach = function(_, bufnr)
-					lsp_keymap(bufnr)
-				end,
-			})
-		end,
-	}),
+	function(server_name)
+		require("lspconfig")[server_name].setup({
+			on_attach = function(_, bufnr)
+				lsp_keymap(bufnr)
+			end,
+		})
+	end,
 })
 
 -- Formatters
@@ -39,13 +33,16 @@ require("mason-lspconfig").setup_handlers({
 require("conform").setup({
 	formatters_by_ft = {
 		lua = { "stylua" },
-		-- Conform will run multiple formatters sequentially
 		python = { "isort", "black" },
-		-- You can customize some of the format options for the filetype (:help conform.format)
 		rust = { "rustfmt", lsp_format = "fallback" },
-		-- Conform will run the first available formatter
 		javascript = { "biome", stop_after_first = true },
 	},
 })
 
 require("mason-conform").setup({})
+
+-- Debug
+require("mason-nvim-dap").setup({
+	ensure_installed = { "python", "js-debug-adaptor" },
+})
+
