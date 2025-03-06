@@ -1,6 +1,6 @@
 require("mason").setup()
 require("mason-lspconfig").setup({
-	ensure_installed = { "lua_ls", "rust_analyzer", "ts_ls", "java_language_server" },
+	ensure_installed = { "lua_ls", "rust_analyzer", "ts_ls", "marksman", "svelte" },
 })
 
 function lsp_keymap(bufnr)
@@ -18,6 +18,8 @@ function lsp_keymap(bufnr)
 	vim.keymap.set("n", "gr", vim.lsp.buf.references, bufopts)
 end
 
+require('java').setup()
+local noop = function() end
 require("mason-lspconfig").setup_handlers({
 	function(server_name)
 		require("lspconfig")[server_name].setup({
@@ -28,6 +30,15 @@ require("mason-lspconfig").setup_handlers({
 	end,
 })
 
+-- local jdtls_bin = vim.fn.stdpath("data") .. "/mason/bin/jdtls"
+--
+-- local config = {
+--     cmd = { jdtls_bin },
+--     root_dir = vim.fs.dirname(vim.fs.find({'gradlew', '.git', 'mvnw'}, { upward = true })[1]),
+--     on_attach = lsp_keymap,
+-- }
+-- require('jdtls').start_or_attach(config)
+
 -- Formatters
 
 require("conform").setup({
@@ -36,6 +47,8 @@ require("conform").setup({
 		python = { "isort", "black" },
 		rust = { "rustfmt", lsp_format = "fallback" },
 		javascript = { "biome", stop_after_first = true },
+		html = { "rustywind" },
+        json = { "jq" }
 	},
 })
 
@@ -45,4 +58,3 @@ require("mason-conform").setup({})
 require("mason-nvim-dap").setup({
 	ensure_installed = { "python", "js-debug-adaptor" },
 })
-
